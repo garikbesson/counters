@@ -1,13 +1,11 @@
 use near_workspaces::{types::NearToken, Account, Contract};
 use serde_json::json;
- 
-const CONTRACT_WASM_FILEPATH: &str = "../target/wasm32-unknown-unknown/release/contract.wasm";
 
-#[tokio::main]
+#[tokio::test]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let worker = near_workspaces::sandbox().await?;
-    let wasm = std::fs::read(CONTRACT_WASM_FILEPATH)?;
-    let contract = worker.dev_deploy(&wasm).await?;
+    let contract_wasm = near_workspaces::compile_project("./").await?;
+    let contract = worker.dev_deploy(&contract_wasm).await?;
  
     // create accounts
     let account = worker.dev_create_account().await?;
@@ -35,11 +33,10 @@ async fn test_can_be_incremented(
         .await?
         .json()?;
 
-    user.call(contract.id(), "increment")
+    let _ = user.call(contract.id(), "increment")
         .args_json(json!({}))
         .transact()
-        .await?
-        .json()?;
+        .await?;
     
     let end_counter: u8 = user
         .call(contract.id(), "get_num")

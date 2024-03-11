@@ -33,6 +33,7 @@ pub fn reset(&mut self) {
 
 1. Make sure you have installed [rust](https://rust.org/).
 2. Install the [`NEAR CLI`](https://github.com/near/near-cli#setup)
+3. Install the [`cargo-near`](https://github.com/near/cargo-near)
 
 <br />
 
@@ -40,14 +41,14 @@ pub fn reset(&mut self) {
 You can automatically compile and deploy the contract in the NEAR testnet by running:
 
 ```bash
-./deploy.sh
-```
+# Create an account
+near create-account <accountId> --useFaucet
 
-Once finished, check the `neardev/dev-account` file to find the address in which the contract was deployed:
+# Build the contract
+cargo near build
 
-```bash
-cat ./neardev/dev-account
-# e.g. dev-1659899566943-21539992274727
+# Deploy the contract
+cargo near deploy <accountId>
 ```
 
 <br />
@@ -60,7 +61,7 @@ cat ./neardev/dev-account
 
 ```bash
 # Use near-cli to get the counter value
-near view <dev-account> get_num
+near view <accountId> get_num
 ```
 
 <br />
@@ -72,7 +73,7 @@ near view <dev-account> get_num
 
 ```bash
 # Use near-cli to set increment the counter
-near call <dev-account> increment --accountId <dev-account>
+near call <accountId> increment --accountId <accountId>
 ```
 
 **Tip:** If you would like to call `increment` using your own account, first login into NEAR using:
