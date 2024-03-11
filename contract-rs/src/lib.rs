@@ -1,9 +1,9 @@
-use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::borsh::{BorshDeserialize, BorshSerialize};
 use near_sdk::{log, near_bindgen};
-
 
 #[near_bindgen]
 #[derive(Default, BorshDeserialize, BorshSerialize)]
+#[borsh(crate = "near_sdk::borsh")]
 pub struct Counter {
     val: i8,
 }
@@ -18,13 +18,13 @@ impl Counter {
     // Public method: Increment the counter.
     pub fn increment(&mut self) {
         self.val += 1;
-        log!("Increased number to {}", self.val);
+        log!("Increased number {} to", self.val);
     }
 
     // Public method: Decrement the counter.
     pub fn decrement(&mut self) {
         self.val -= 1;
-        log!("Decreased number to {}", self.val);
+        log!("Decreased number {} to", self.val);
     }
 
     // Public method - Reset to zero.
